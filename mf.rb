@@ -53,7 +53,7 @@ end
 puts "Demoing construction of a singularly linked list"
 linked_list = List.new
 
-6.times do |c|
+7.times do |c|
   linked_list.add_node_to_tail(Node.new(c))
 end
 puts
