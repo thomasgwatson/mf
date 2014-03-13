@@ -7,7 +7,7 @@ def reverse_char(string)
   operations = string.length/2
   end_of_array = -1
   for i in (0...operations)
-    string[i], string[end_of_array] = string[end_of_array], string[0]
+    string[i], string[end_of_array] = string[end_of_array], string[i]
     end_of_array -= 1
   end
   string
