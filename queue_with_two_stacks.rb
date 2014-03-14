@@ -13,12 +13,8 @@ class Queue
   end
 
   def dequeue
-    if @out.empty?
-      self.empty_in_stack
-      @out.pop
-    else
-      @out.pop
-    end
+    self.empty_in_stack if @out.empty?
+    @out.pop
   end
 
   def empty_in_stack
