@@ -1,0 +1,2 @@
+class Breakfast
+end

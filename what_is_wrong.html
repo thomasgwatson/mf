@@ -1,0 +1,27 @@
+<button id="btn-0">Button 1!</button>
+<button id="btn-1">Button 2!</button>
+<button id="btn-2">Button 3!</button>
+
+<script type="text/javascript">
+  var prizes = ['A Unicorn!', 'A Hug!', 'Fresh Laundry!'];
+  for (var btnNum = 0; btnNum < prizes.length; btnNum++) {
+    document.getElementById('btn-' + btnNum).onclick = function(specificBtnNum){
+      alert(prizes[specificBtnNum]);
+      };
+  }
+</script>
+
+<!-- So each of the buttons will have an appropriate event listener attached to them, but when triggered they'll look for btnNum, which will be 3 for all of them. So you need to have a specific btnNum passed to each of them-->
+
+<!-- We can solve this by wrapping our anonymous function in another anonymous function that takes btnNum as an argument. -->
+
+<script type="text/javascript">
+  var prizes = ['A Unicorn!', 'A Hug!', 'Fresh Laundry!'];
+  for (var btnNum = 0; btnNum < prizes.length; btnNum++) {
+    document.getElementById('btn-' + btnNum).onclick = function(specificBtnNum){
+      return function(){
+      alert(prizes[specificBtnNum]);
+      }
+    }(btnNum);
+  }
+</script>
