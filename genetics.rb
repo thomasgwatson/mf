@@ -9,4 +9,13 @@
 # It should breed the fit members in pairs, randomly selecting a crossover point
 
 class Genetic_strand
+  @@perfect_string = ('a'..'z').to_a.join
+  attr_reader :strand
+  def initialize(args={})
+    @strand = args[:strand] || generate_strand
+  end
+
+  def generate_strand
+    (0..25).map { ('a'..'z').to_a[rand(26)] }.join
+  end
 end
