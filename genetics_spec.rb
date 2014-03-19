@@ -16,6 +16,14 @@ describe Genetic_strand do
   end
 
   describe "fitness" do
+    let (:perfect_case) { Genetic_strand.new({ strand: ('a'..'z').to_a.join }) }
+    let (:imperfect_case) { Genetic_strand.new({ strand: ('a'..'z').to_a.rotate!.join }) }
+    it 'should return a score of one for a perfect_case' do
+      expect(perfect_case.fitness).to eq 1
+    end
 
+    it 'should return a score of zero for a completely imperfect_case' do
+      expect(imperfect_case.fitness).to eq 0
+    end
   end
 end

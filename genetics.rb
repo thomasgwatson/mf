@@ -10,9 +10,10 @@
 
 class Genetic_strand
   @@perfect_string = ('a'..'z').to_a.join
-  attr_reader :strand
+  attr_reader :strand, :fitness
   def initialize(args={})
     @strand = args[:strand] || generate_strand
+    @fitness
   end
 
   def generate_strand
