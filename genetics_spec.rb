@@ -1,5 +1,6 @@
 require 'rspec'
-require_relative 'genetics.rb'
+require_relative 'genetic_strand.rb'
+require_relative 'breeder.rb'
 
 describe Genetic_strand do
   let! (:no_args_case) { Genetic_strand.new }
@@ -43,4 +44,12 @@ describe Genetic_strand do
 end
 
 describe Breeder do
+  let (:basic_breeder) { Breeder.new }
+
+  describe "#initialize" do
+    it 'should create an array of 64 strands for breeding' do
+      expect(basic_breeder.strands.count).to eq 64
+      expect(basic_breeder.strands.first.strand.count).to eq 26
+    end
+  end
 end
