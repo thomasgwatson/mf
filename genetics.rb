@@ -9,14 +9,34 @@
 # It should breed the fit members in pairs, randomly selecting a crossover point
 
 class Genetic_strand
-  @@perfect_string = ('a'..'z').to_a.join
-  attr_reader :strand, :fitness
+  @@perfect_string = ('a'..'z').to_a
+  attr_reader :fitness
+  attr_accessor :strand
   def initialize(args={})
     @strand = args[:strand] || generate_strand
-    @fitness
   end
 
   def generate_strand
-    (0..25).map { ('a'..'z').to_a[rand(26)] }.join
+    (0..25).map { rand_letter }.join
   end
+
+  def fitness(standard = @@perfect_string)
+    count = 0
+    for i in (0..25) do
+      count += 1 if standard[i] == @strand[i]
+    end
+    count * (1/26.0)
+  end
+
+  def rand_letter
+    ('a'..'z').to_a[rand(26)]
+  end
+
+  def mutate
+    @strand[rand(26)] = ('a'..'z').to_a[rand(26)]
+    self
+  end
+end
+
+class Breeder
 end

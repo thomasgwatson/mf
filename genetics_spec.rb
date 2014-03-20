@@ -2,10 +2,14 @@ require 'rspec'
 require_relative 'genetics.rb'
 
 describe Genetic_strand do
+  let! (:no_args_case) { Genetic_strand.new }
+  let (:perfect_case) { Genetic_strand.new({ strand: ('a'..'z').to_a.join }) }
+  let (:imperfect_case) { Genetic_strand.new({ strand: ('a'..'z').to_a.rotate.join }) }
+  let (:near_perfect_case) { Genetic_strand.new({ strand: ('a'..'y').to_a.join + 'y' }) }
+
   describe "basic behaviour" do
     let (:random_string) { "asdfghjkllkjhgfdsa" }
     let (:args_case) { Genetic_strand.new({ strand: random_string }) }
-    let (:no_args_case) { Genetic_strand.new }
     it 'should properly initialize when passed a string' do
       expect(args_case.strand).to eq random_string
     end
@@ -15,15 +19,28 @@ describe Genetic_strand do
     end
   end
 
-  describe "fitness" do
-    let (:perfect_case) { Genetic_strand.new({ strand: ('a'..'z').to_a.join }) }
-    let (:imperfect_case) { Genetic_strand.new({ strand: ('a'..'z').to_a.rotate!.join }) }
+  describe "#fitness" do
+
     it 'should return a score of one for a perfect_case' do
       expect(perfect_case.fitness).to eq 1
+    end
+
+    it 'should return a score just below 1 for a less than perfect_case' do
+      expect(near_perfect_case.fitness).to eq 0.9615384615384616
     end
 
     it 'should return a score of zero for a completely imperfect_case' do
       expect(imperfect_case.fitness).to eq 0
     end
   end
+
+  describe "#mutate" do
+    let! (:mutated_case) { Genetic_strand.new({ strand: ('a'..'z').to_a.join }).mutate }
+    it 'should change only one character in the string' do
+      expect(mutated_case.fitness).to eq 0.9615384615384616
+    end
+  end
+end
+
+describe Breeder do
 end
