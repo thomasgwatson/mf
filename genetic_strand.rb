@@ -37,6 +37,3 @@ class Genetic_strand
     self
   end
 end
-
-class Breeder
-end
