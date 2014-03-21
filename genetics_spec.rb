@@ -4,7 +4,8 @@ require_relative 'breeder.rb'
 
 describe Genetic_strand do
   let! (:no_args_case) { Genetic_strand.new }
-  let (:perfect_case) { Genetic_strand.new({ strand: ('a'..'z').to_a.join }) }
+  let (:alphabet) { ('a'..'z').to_a.join }
+  let (:perfect_case) { Genetic_strand.new({ strand: alphabet }) }
   let (:imperfect_case) { Genetic_strand.new({ strand: ('a'..'z').to_a.rotate.join }) }
   let (:near_perfect_case) { Genetic_strand.new({ strand: ('a'..'y').to_a.join + 'y' }) }
 
@@ -36,7 +37,7 @@ describe Genetic_strand do
   end
 
   describe "#mutate" do
-    let! (:mutated_case) { Genetic_strand.new({ strand: ('a'..'z').to_a.join }).mutate }
+    let! (:mutated_case) { Genetic_strand.new({ strand: alphabet }).mutate }
     it 'should change only one character in the string' do
       expect(mutated_case.fitness).to eq 0.9615384615384616
     end
@@ -44,12 +45,36 @@ describe Genetic_strand do
 end
 
 describe Breeder do
-  let (:basic_breeder) { Breeder.new }
+  let (:alphabet) { ('a'..'z').to_a.join }
+  let (:almost_alphabet) { ('a'..'y').to_a.join + 'y' }
+  let (:less_fit_strand) { Genetic_strand.new({ strand: almost_alphabet }) }
+  let (:fittest_strand) { Genetic_strand.new({ strand: alphabet }) }
+  let (:strands) { Array.new(64) { Genetic_strand.new } }
+  let (:basic_breeder) { Breeder.new({ strands: strands }) }
+  let (:fitness_test_breeder) { Breeder.new({ strands: [less_fit_strand, fittest_strand] }) }
 
   describe "#initialize" do
     it 'should create an array of 64 strands for breeding' do
       expect(basic_breeder.strands.count).to eq 64
-      expect(basic_breeder.strands.first.strand.count).to eq 26
+      expect(basic_breeder.strands.first.strand.length).to eq 26
+    end
+  end
+
+  describe "#order_by_fitness" do
+    it "should reorder the strands highest to lowest, by their fitness" do
+      expect(fitness_test_breeder.order_by_fitness).to eq [fittest_strand, less_fit_strand]
+    end
+  end
+
+  describe ".slice_and_switch" do
+    it "should slice and switch the strings at an appropriate point" do
+      expect(Breeder.slice_and_switch("lend", "game", 2)).to eq ['leme','gand']
+    end
+  end
+
+  describe "#evolve" do
+    it 'should return a candidate whose strand matches the alphabet' do
+      expect(basic_breeder.evolve).to eq alphabet
     end
   end
 end
